@@ -1,0 +1,6 @@
+{
+  "legacyWatch": true,
+  "watch": ["server", "src"],
+  "exec": "ts-node --project tsconfig.server.json src/server.ts",
+  "ext": "js ts"
+}

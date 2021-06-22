@@ -1,0 +1,18 @@
+
+FROM node:latest
+
+RUN echo "running dev mode"
+
+RUN apt-get update
+
+ADD . ./backend
+WORKDIR /backend
+
+RUN npm install -g typescript
+RUN npm i -g nodemon
+RUN npm install --legacy-peer-deps
+
+RUN rm -rf .next
+RUN npm run build
+
+ENTRYPOINT [ "npm", "run", "dev" ] 
