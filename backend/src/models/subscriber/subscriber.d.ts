@@ -1,18 +1,24 @@
 import { Document, Model } from 'mongoose';
-import { IGroup } from '../group/group';
+import { IList } from '../list/list';
 
-export interface ISubscriber extends Document {
-  id: Number;
+export interface ISubscriberAttributes extends Document {
   name: String;
   email: String;
-  group: IGroup;
+  list: IList;
+}
+
+export interface ISubscriber extends Document, ISubscriberAttributes {
+  createdAt?: Date | String;
+  updatedAt?: Date | String;
 }
 
 export interface ISubscriberModel extends Model<ISubscriber> {
-  addSubscriber(request: ISubscriber): Promise<ISubscriber>;
+  getSubscribers(): Promise<ISubscriber>;
+  findSubscriber(subscriberId: string): Promise<ISubscriber>;
+  addSubscriber(subscriber: ISubscriberAttributes): Promise<ISubscriber>;
   updateSubscriber(
-    subscriber_id: Number,
-    request: ISubscriber,
+    subscriberId: string,
+    subscriberUpdate: ISubscriberAttributes
   ): Promise<ISubscriber>;
-  deleteSubscriber(subscriber_id: Number): void;
+  deleteSubscriber(subscriberId: string): [];
 }

@@ -1,5 +1,9 @@
 import { model, models, Schema } from 'mongoose';
-import { ISubscriber, ISubscriberModel } from './subscriber.d';
+import {
+  ISubscriber,
+  ISubscriberAttributes,
+  ISubscriberModel,
+} from './subscriber.d';
 
 const SubscriberSchema: Schema = new Schema(
   {
@@ -11,7 +15,7 @@ const SubscriberSchema: Schema = new Schema(
       type: String,
       required: true,
     },
-    group: {
+    list: {
       type: Object,
       required: true,
     },
@@ -19,24 +23,43 @@ const SubscriberSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-SubscriberSchema.statics.addGroup = function (
+SubscriberSchema.statics.addSubscriber = function (
   request: ISubscriber
 ): Promise<ISubscriber> {
-  const group = new this({
+  const subscriber = new this({
     name: request.name,
     email: request.email,
-    group: request.group,
+    list: request.list,
   });
 
-  return group.save();
+  return subscriber.save();
 };
 
-SubscriberSchema.statics.updateGroup = function (
-  subscriber_id: Number,
-  request: ISubscriber
-) {};
+SubscriberSchema.statics.updateSubscriber = async function (
+  subscriberId: string,
+  list: ISubscriberAttributes
+): Promise<ISubscriber> {
+  const listResult = await this.findOneAndUpdate({ _id: subscriberId }, list, {
+    upsert: false,
+  });
+  return listResult;
+};
 
-SubscriberSchema.statics.deleteGroup = function (subscriber_id: Number) {};
+SubscriberSchema.statics.getLists = async function (): Promise<ISubscriber> {
+  return await this.find({});
+};
+
+SubscriberSchema.statics.findList = async function (
+  subscriberId: string
+): Promise<ISubscriber> {
+  return await this.findOne({ _id: subscriberId });
+};
+
+SubscriberSchema.statics.deleteList = async function (
+  subscriberId: string
+): Promise<ISubscriber> {
+  return await this.deleteOne({ _id: subscriberId });
+};
 
 const SubscriberModel =
   models['Subscriber'] ||
