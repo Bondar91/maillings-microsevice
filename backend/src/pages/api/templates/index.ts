@@ -1,13 +1,13 @@
 import { request, Request, Response } from 'express';
 import nc from 'next-connect';
-import subscriberController from 'controllers/subscriberController';
+import templateController from 'controllers/templateController';
 
 const handler = nc()
   .get(async (request: Request, response: Response) => {
-    return await subscriberController.getAll(response);
+    return await templateController.getAll(response);
   })
   .post(async (request: Request, response: Response) => {
-    return await subscriberController.create(request, response);
+    return await templateController.create(request, response);
   });
 
 export default handler;

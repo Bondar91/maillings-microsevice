@@ -10,7 +10,7 @@ WORKDIR /backend
 
 RUN npm install -g typescript
 RUN npm i -g nodemon
-RUN npm install --legacy-peer-deps
+RUN npm install --legacy-peer-deps 
 
 RUN rm -rf .next
 RUN npm run build

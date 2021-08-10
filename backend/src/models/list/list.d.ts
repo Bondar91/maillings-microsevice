@@ -1,7 +1,11 @@
 import { Document, Model } from 'mongoose';
+import { ISubscriberAttributes } from 'models/subscriber/subscriber.d';
+import { IMaillingAttributes } from 'model/mailling/mailling.d';
 
 export interface IListAttributes {
   name: String;
+  subscribers: ISubscriberAttributes[];
+  maillings: IMaillingAttributes[];
 }
 
 export interface IList extends Document, IListAttributes {
@@ -11,8 +15,8 @@ export interface IList extends Document, IListAttributes {
 
 export interface IListsModel extends Model<IList> {
   getLists(): Promise<IList>;
-  findList(listId: string): Promise<IList>;
+  findListById(listId: string): Promise<IList>;
   addList(list: IListAttributes): Promise<IList>;
-  updateList(listId: string, listUpdate: IListAttributes): Promise<IList>;
-  deleteList(listId: string): [];
+  updateListById(listId: string, list: IListAttributes): Promise<IList>;
+  deleteListById(listId: string): Promise<void>;
 }

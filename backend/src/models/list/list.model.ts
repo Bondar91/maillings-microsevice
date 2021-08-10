@@ -1,5 +1,7 @@
 import { model, models, Schema } from 'mongoose';
 import { IList, IListAttributes, IListsModel } from './list.d';
+import { Subscriber } from 'models';
+import { ISubscriber } from 'models/subscriber/subscriber.d';
 
 const ListSchema: Schema = new Schema(
   {
@@ -7,40 +9,73 @@ const ListSchema: Schema = new Schema(
       type: String,
       required: true,
     },
+    subscribers: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Subscriber',
+        required: true,
+      },
+    ],
+    maillings: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Mailling',
+        required: true,
+      },
+    ],
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+  }
 );
 
 ListSchema.statics.addList = async function (
   list: IListAttributes
-): Promise<IList> {
+): Promise<IList | boolean> {
   const entry: IList = new this(list);
   const saved = await entry.save();
   return saved;
 };
 
-ListSchema.statics.updateList = async function (
+ListSchema.statics.updateListById = async function (
   listId: string,
   list: IListAttributes
-): Promise<IList> {
-  const listResult = await this.findOneAndUpdate({ _id: listId }, list, {
-    upsert: false,
-  });
+): Promise<IList | boolean> {
+  const listResult: IList = await this.findByIdAndUpdate(listId, list);
   return listResult;
 };
 
-ListSchema.statics.getLists = async function (): Promise<IList> {
-  return await this.find({});
+ListSchema.statics.getLists = async function (
+  withSubscribers = true
+): Promise<IList> {
+  return await this.find({}).populate({
+    path: 'subscribers',
+    select: '_id name email',
+  });
 };
 
-ListSchema.statics.findList = async function (listId: string): Promise<IList> {
-  return await this.findOne({ _id: listId });
-};
-
-ListSchema.statics.deleteList = async function (
+ListSchema.statics.findListById = async function (
   listId: string
 ): Promise<IList> {
-  return await this.deleteOne({ _id: listId });
+  return await this.findById(listId).populate({
+    path: 'subscribers',
+    select: '_id name email',
+  });
+};
+
+ListSchema.statics.deleteListById = async function (
+  listId: string
+): Promise<void> {
+  const list = await this.findByIdAndDelete(listId);
+
+  list.subscribers.map(async (subscribers: ISubscriber) => {
+    await Subscriber.findByIdAndUpdate(subscribers._id, {
+      $pull: { lists: list._id },
+    });
+  });
 };
 
 const ListModel =

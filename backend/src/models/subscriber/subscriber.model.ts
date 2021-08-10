@@ -15,54 +15,64 @@ const SubscriberSchema: Schema = new Schema(
       type: String,
       required: true,
     },
-    list: {
-      type: Object,
-      required: true,
-    },
+    lists: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'List',
+        required: true,
+      },
+    ],
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+  }
 );
 
-SubscriberSchema.statics.addSubscriber = function (
-  request: ISubscriber
+SubscriberSchema.statics.addSubscriber = async function (
+  subscriber: ISubscriberAttributes
 ): Promise<ISubscriber> {
-  const subscriber = new this({
-    name: request.name,
-    email: request.email,
-    list: request.list,
-  });
+  const entry: ISubscriber = new this(subscriber);
+  const saved = await entry.save();
 
-  return subscriber.save();
+  return saved;
 };
 
-SubscriberSchema.statics.updateSubscriber = async function (
+SubscriberSchema.statics.updateSubscriberById = async function (
   subscriberId: string,
-  list: ISubscriberAttributes
+  subscriber: ISubscriberAttributes
 ): Promise<ISubscriber> {
-  const listResult = await this.findOneAndUpdate({ _id: subscriberId }, list, {
-    upsert: false,
-  });
-  return listResult;
+  const subscriberResult = await this.findOneAndUpdate(
+    { _id: subscriberId },
+    subscriber,
+    {
+      upsert: false,
+    }
+  );
+  return subscriberResult;
 };
 
-SubscriberSchema.statics.getLists = async function (): Promise<ISubscriber> {
-  return await this.find({});
-};
+SubscriberSchema.statics.getSubscribers =
+  async function (): Promise<ISubscriber> {
+    return await this.find({}).populate('lists');
+  };
 
-SubscriberSchema.statics.findList = async function (
-  subscriberId: string
+SubscriberSchema.statics.findSubscriberById = async function (
+  subscriberId: String
 ): Promise<ISubscriber> {
   return await this.findOne({ _id: subscriberId });
 };
 
-SubscriberSchema.statics.deleteList = async function (
+SubscriberSchema.statics.deleteSubscriberById = async function (
   subscriberId: string
 ): Promise<ISubscriber> {
   return await this.deleteOne({ _id: subscriberId });
 };
 
 const SubscriberModel =
-  models['Subscriber'] ||
+  (models['Subscriber'] as ISubscriberModel) ||
   model<ISubscriber, ISubscriberModel>('Subscriber', SubscriberSchema);
 
 export default SubscriberModel;

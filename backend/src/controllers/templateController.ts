@@ -1,6 +1,6 @@
-import { IListAttributes } from 'models/list/list.d';
-import { List } from 'models';
-import { listSchema } from 'utils/validates/index';
+import { ITemplateAttributes } from 'models/template/template.d';
+import { Template } from 'models';
+import { templateSchema } from 'utils/validates/index';
 import { Request, Response } from 'express';
 import CommunicationHandler from 'utils/handlers/CommunicationHandler';
 import { isValidObjectId, Types } from 'mongoose';
@@ -9,15 +9,15 @@ type SecurityQuery = {
   _id: string;
 };
 
-class listController {
+class templateController {
   static getAll = async (response: Response) => {
     try {
-      const lists = await List.getLists();
+      const templates = await Template.getTemplates();
 
       return CommunicationHandler.responseWithSuccess(
         response,
-        'Success! List has been found',
-        lists
+        'Success! Template has been found',
+        templates
       );
     } catch (error) {
       return CommunicationHandler.responseWithError(response, error.message);
@@ -35,12 +35,12 @@ class listController {
     }
 
     try {
-      const list = await List.findListById(_id);
+      const template = await Template.findTemplateById(_id);
 
       return CommunicationHandler.responseWithSuccess(
         response,
-        'Success! List has been found',
-        list
+        'Success! Template has been found',
+        template
       );
     } catch (error) {
       return CommunicationHandler.responseWithError(error, error.message);
@@ -49,15 +49,16 @@ class listController {
 
   static create = async (request: Request, response: Response) => {
     try {
-      const validatedList: IListAttributes = await listSchema.validateAsync({
-        ...request.body,
-      });
-      const saveList = await List.addList(validatedList);
+      const validatedTemplate: ITemplateAttributes =
+        await templateSchema.validateAsync({
+          ...request.body,
+        });
+      const saveTemplate = await Template.addTemplate(validatedTemplate);
 
       return CommunicationHandler.responseWithSuccess(
         response,
-        'Success! List has been created',
-        saveList
+        'Success! Template has been created',
+        saveTemplate
       );
     } catch (error) {
       return CommunicationHandler.responseWithError(error, error.message);
@@ -75,15 +76,19 @@ class listController {
     }
 
     try {
-      const validatedList: IListAttributes = await listSchema.validateAsync({
-        ...request.body,
-      });
-      const saveList = await List.updateListById(_id, validatedList);
+      const validatedTemplate: ITemplateAttributes =
+        await templateSchema.validateAsync({
+          ...request.body,
+        });
+      const saveTemplate = await Template.updateTemplateById(
+        _id,
+        validatedTemplate
+      );
 
       return CommunicationHandler.responseWithSuccess(
         response,
-        'Success! List has been updated',
-        saveList
+        'Success! Template has been updated',
+        saveTemplate
       );
     } catch (error) {
       return CommunicationHandler.responseWithError(response, error.message);
@@ -101,11 +106,11 @@ class listController {
     }
 
     try {
-      await List.deleteListById(_id);
+      await Template.deleteTemplateById(_id);
 
       return CommunicationHandler.responseWithSuccess(
         response,
-        'Success! List has been removed'
+        'Success! Template has been removed'
       );
     } catch (error) {
       return CommunicationHandler.responseWithError(response, error.message);
@@ -113,4 +118,4 @@ class listController {
   };
 }
 
-export default listController;
+export default templateController;

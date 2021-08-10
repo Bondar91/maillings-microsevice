@@ -1,10 +1,11 @@
 import { Document, Model } from 'mongoose';
-import { IList } from '../list/list';
+import { IListAttributes } from 'models/list/list.d';
 
-export interface ISubscriberAttributes extends Document {
+export interface ISubscriberAttributes {
+  _id?: String;
   name: String;
   email: String;
-  list: IList;
+  lists: IListAttributes[];
 }
 
 export interface ISubscriber extends Document, ISubscriberAttributes {
@@ -14,11 +15,11 @@ export interface ISubscriber extends Document, ISubscriberAttributes {
 
 export interface ISubscriberModel extends Model<ISubscriber> {
   getSubscribers(): Promise<ISubscriber>;
-  findSubscriber(subscriberId: string): Promise<ISubscriber>;
+  findSubscriberById(subscriberId: String): Promise<ISubscriber>;
   addSubscriber(subscriber: ISubscriberAttributes): Promise<ISubscriber>;
-  updateSubscriber(
-    subscriberId: string,
-    subscriberUpdate: ISubscriberAttributes
+  updateSubscriberById(
+    subscriberId: String,
+    subscriber: ISubscriberAttributes
   ): Promise<ISubscriber>;
-  deleteSubscriber(subscriberId: string): [];
+  deleteSubscriberById(subscriberId: String): Promise<void>;
 }

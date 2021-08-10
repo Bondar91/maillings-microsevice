@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
 import nc from 'next-connect';
-import subscriberController from 'controllers/subscriberController';
+import templateController from 'controllers/templateController';
 
 const handler = nc()
   .get(async (request: Request, response: Response) => {
-    return await subscriberController.findOneById(request, response);
+    return await templateController.findOneById(request, response);
   })
   .put(async (request: Request, response: Response) => {
-    return await subscriberController.update(request, response);
+    return await templateController.update(request, response);
   })
   .delete(async (request: Request, response: Response) => {
-    await subscriberController.remove(request, response);
+    await templateController.remove(request, response);
   });
 
 export default handler;

@@ -1,6 +1,6 @@
-import { IListAttributes } from 'models/list/list.d';
-import { List } from 'models';
-import { listSchema } from 'utils/validates/index';
+import { IMaillingAttributes } from 'models/mailling/mailling.d';
+import { Mailling } from 'models';
+import { maillingSchema } from 'utils/validates/index';
 import { Request, Response } from 'express';
 import CommunicationHandler from 'utils/handlers/CommunicationHandler';
 import { isValidObjectId, Types } from 'mongoose';
@@ -9,15 +9,15 @@ type SecurityQuery = {
   _id: string;
 };
 
-class listController {
+class maillingController {
   static getAll = async (response: Response) => {
     try {
-      const lists = await List.getLists();
+      const maillings = await Mailling.getMaillings();
 
       return CommunicationHandler.responseWithSuccess(
         response,
-        'Success! List has been found',
-        lists
+        'Success! Mailling has been found',
+        maillings
       );
     } catch (error) {
       return CommunicationHandler.responseWithError(response, error.message);
@@ -35,12 +35,12 @@ class listController {
     }
 
     try {
-      const list = await List.findListById(_id);
+      const mailling = await Mailling.findMaillingById(_id);
 
       return CommunicationHandler.responseWithSuccess(
         response,
-        'Success! List has been found',
-        list
+        'Success! Mailling has been found',
+        mailling
       );
     } catch (error) {
       return CommunicationHandler.responseWithError(error, error.message);
@@ -49,15 +49,16 @@ class listController {
 
   static create = async (request: Request, response: Response) => {
     try {
-      const validatedList: IListAttributes = await listSchema.validateAsync({
-        ...request.body,
-      });
-      const saveList = await List.addList(validatedList);
+      const validatedMailling: IMaillingAttributes =
+        await maillingSchema.validateAsync({
+          ...request.body,
+        });
+      const saveMailling = await Mailling.addMailling(validatedMailling);
 
       return CommunicationHandler.responseWithSuccess(
         response,
-        'Success! List has been created',
-        saveList
+        'Success! Mailling has been created',
+        saveMailling
       );
     } catch (error) {
       return CommunicationHandler.responseWithError(error, error.message);
@@ -75,15 +76,19 @@ class listController {
     }
 
     try {
-      const validatedList: IListAttributes = await listSchema.validateAsync({
-        ...request.body,
-      });
-      const saveList = await List.updateListById(_id, validatedList);
+      const validatedMailling: IMaillingAttributes =
+        await maillingSchema.validateAsync({
+          ...request.body,
+        });
+      const saveMailling = await Mailling.updateMaillingById(
+        _id,
+        validatedMailling
+      );
 
       return CommunicationHandler.responseWithSuccess(
         response,
-        'Success! List has been updated',
-        saveList
+        'Success! Mailling has been updated',
+        saveMailling
       );
     } catch (error) {
       return CommunicationHandler.responseWithError(response, error.message);
@@ -101,11 +106,11 @@ class listController {
     }
 
     try {
-      await List.deleteListById(_id);
+      await Mailling.deleteMaillingById(_id);
 
       return CommunicationHandler.responseWithSuccess(
         response,
-        'Success! List has been removed'
+        'Success! Mailling has been removed'
       );
     } catch (error) {
       return CommunicationHandler.responseWithError(response, error.message);
@@ -113,4 +118,4 @@ class listController {
   };
 }
 
-export default listController;
+export default maillingController;
