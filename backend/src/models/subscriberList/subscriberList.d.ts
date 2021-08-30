@@ -11,13 +11,17 @@ export interface ISubscriberList extends Document, ISubscriberListAttributes {
 }
 
 export interface ISubscriberListModel extends Model<ISubscriberList> {
-  getLists(): Promise<ISubscriberList>;
-  findListById(listId: string): Promise<ISubscriberList>;
-  addList(list: ISubscriberListAttributes): Promise<ISubscriberList>;
-  updateListById(
-    listId: string,
-    list: ISubscriberListAttributes
+  getSubscriberLists(): Promise<ISubscriberList>;
+  findSubscriberListById(subscriberListId: string): Promise<ISubscriberList>;
+  addSubscriberList(
+    subscriberList: ISubscriberListAttributes
   ): Promise<ISubscriberList>;
-  deleteListById(listId: string): Promise<void>;
-  findListsByIds(listsIds: string[]): Promise<ISubscriberList[]>;
+  updateSubscriberListById(
+    subscriberListId: string,
+    subscriberList: ISubscriberListAttributes
+  ): Promise<ISubscriberList>;
+  deleteSubscriberListById(subscriberListId: string): Promise<void>;
+  findSubscriberListsByIds(
+    subscriberListsIds: string[]
+  ): Promise<ISubscriberList[]>;
 }

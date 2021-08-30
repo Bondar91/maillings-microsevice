@@ -12,7 +12,7 @@ type SecurityQuery = {
 class subscriberListController {
   static getAll = async (response: Response) => {
     try {
-      const subscriberLists = await SubscriberList.getLists();
+      const subscriberLists = await SubscriberList.getSubscriberLists();
 
       return CommunicationHandler.responseWithSuccess(
         response,
@@ -35,7 +35,7 @@ class subscriberListController {
     }
 
     try {
-      const subscriberList = await SubscriberList.findListById(_id);
+      const subscriberList = await SubscriberList.findSubscriberListById(_id);
 
       return CommunicationHandler.responseWithSuccess(
         response,
@@ -69,12 +69,14 @@ class subscriberListController {
         );
       }
 
-      const saveList = await SubscriberList.addList(validatedSubscriberList);
+      const saveSubscriberList = await SubscriberList.addSubscriberList(
+        validatedSubscriberList
+      );
 
       return CommunicationHandler.responseWithSuccess(
         response,
         'Success! List has been created',
-        saveList
+        saveSubscriberList
       );
     } catch (error) {
       return CommunicationHandler.responseWithError(response, error.message);
@@ -109,7 +111,7 @@ class subscriberListController {
         );
       }
 
-      const saveList = await SubscriberList.updateListById(
+      const saveSubscriberList = await SubscriberList.updateSubscriberListById(
         _id,
         validatedSubscriberList
       );
@@ -117,7 +119,7 @@ class subscriberListController {
       return CommunicationHandler.responseWithSuccess(
         response,
         'Success! List has been updated',
-        saveList
+        saveSubscriberList
       );
     } catch (error) {
       return CommunicationHandler.responseWithError(response, error.message);
@@ -135,7 +137,7 @@ class subscriberListController {
     }
 
     try {
-      await SubscriberList.deleteListById(_id);
+      await SubscriberList.deleteSubscriberListById(_id);
 
       return CommunicationHandler.responseWithSuccess(
         response,

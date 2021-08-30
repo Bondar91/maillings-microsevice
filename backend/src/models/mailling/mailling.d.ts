@@ -5,7 +5,7 @@ export interface IMaillingAttributes {
   description: string;
   body: string;
   templateId: string;
-  listsIds: string[];
+  subscriberListsIds: string[];
 }
 
 export interface IMailling extends Document, IMaillingAttributes {

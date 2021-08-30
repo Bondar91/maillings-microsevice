@@ -27,7 +27,7 @@ const SubscriberListSchema: Schema = new Schema(
   }
 );
 
-SubscriberListSchema.statics.addList = async function (
+SubscriberListSchema.statics.addSubscriberList = async function (
   list: ISubscriberListAttributes
 ): Promise<ISubscriberList | boolean> {
   const entry: ISubscriberList = new this(list);
@@ -35,7 +35,7 @@ SubscriberListSchema.statics.addList = async function (
   return saved;
 };
 
-SubscriberListSchema.statics.updateListById = async function (
+SubscriberListSchema.statics.updateSubscriberListById = async function (
   listId: string,
   list: ISubscriberListAttributes
 ): Promise<ISubscriberList | boolean> {
@@ -46,7 +46,7 @@ SubscriberListSchema.statics.updateListById = async function (
   return listResult;
 };
 
-SubscriberListSchema.statics.getLists = async function (
+SubscriberListSchema.statics.getSubscriberLists = async function (
   withSubscribers = true
 ): Promise<ISubscriberList> {
   return await this.find({}).populate({
@@ -55,7 +55,7 @@ SubscriberListSchema.statics.getLists = async function (
   });
 };
 
-SubscriberListSchema.statics.findListById = async function (
+SubscriberListSchema.statics.findSubscriberListById = async function (
   listId: string
 ): Promise<ISubscriberList> {
   return await this.findById(listId).populate({
@@ -64,13 +64,13 @@ SubscriberListSchema.statics.findListById = async function (
   });
 };
 
-SubscriberListSchema.statics.findListsByIds = async function (
+SubscriberListSchema.statics.findSubscriberListsByIds = async function (
   listsIds: string[]
 ): Promise<void> {
   await this.find().where('_id').in(listsIds).exec();
 };
 
-SubscriberListSchema.statics.deleteListById = async function (
+SubscriberListSchema.statics.deleteSubscriberListById = async function (
   listId: string
 ): Promise<void> {
   await this.findByIdAndDelete(listId);

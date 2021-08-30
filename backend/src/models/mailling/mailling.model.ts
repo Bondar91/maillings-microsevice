@@ -16,10 +16,10 @@ const MaillingSchema: Schema = new Schema(
       ref: 'Template',
       required: true,
     },
-    listsIds: [
+    subscriberListsIds: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'List',
+        ref: 'SubscriberList',
         required: true,
       },
     ],

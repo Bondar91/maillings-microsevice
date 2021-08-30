@@ -54,10 +54,10 @@ class maillingController {
           ...request.body,
         });
 
-      const { listsIds, templateId } = validatedMailling;
+      const { subscriberListsIds, templateId } = validatedMailling;
 
       const foundTemplate = await Template.findTemplateById(templateId);
-      console.log(foundTemplate);
+
       if (!foundTemplate) {
         return CommunicationHandler.responseWithError(
           response,
@@ -65,9 +65,13 @@ class maillingController {
         );
       }
 
-      const foundLists = await SubscriberList.findListsByIds(listsIds);
-      console.log(foundLists);
-      if (foundLists && foundLists.length !== listsIds.length) {
+      const foundSubscriberLists =
+        await SubscriberList.findSubscriberListsByIds(subscriberListsIds);
+
+      if (
+        foundSubscriberLists &&
+        foundSubscriberLists.length !== subscriberListsIds.length
+      ) {
         return CommunicationHandler.responseWithError(
           response,
           'Error! Not found list'
@@ -102,7 +106,7 @@ class maillingController {
           ...request.body,
         });
 
-      const { listsIds, templateId } = validatedMailling;
+      const { subscriberListsIds, templateId } = validatedMailling;
 
       const foundTemplate = await Template.findTemplateById(templateId);
       console.log(foundTemplate);
@@ -113,9 +117,13 @@ class maillingController {
         );
       }
 
-      const foundLists = await SubscriberList.findListsByIds(listsIds);
-      console.log(foundLists);
-      if (foundLists && foundLists.length !== listsIds.length) {
+      const foundSubscriberLists =
+        await SubscriberList.findSubscriberListsByIds(subscriberListsIds);
+
+      if (
+        foundSubscriberLists &&
+        foundSubscriberLists.length !== subscriberListsIds.length
+      ) {
         return CommunicationHandler.responseWithError(
           response,
           'Error! Not found list'
