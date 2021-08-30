@@ -11,12 +11,12 @@ const MaillingSchema: Schema = new Schema(
       type: Date,
       required: true,
     },
-    template: {
+    templateId: {
       type: Schema.Types.ObjectId,
       ref: 'Template',
       required: true,
     },
-    lists: [
+    listsIds: [
       {
         type: Schema.Types.ObjectId,
         ref: 'List',
@@ -45,28 +45,37 @@ MaillingSchema.statics.updateMaillingById = async function (
   maillingId: string,
   mailling: IMaillingAttributes
 ): Promise<IMailling> {
-  const maillingResult = await this.findByIdAndUpdate(maillingId, mailling);
+  const maillingResult: IMailling = await this.findByIdAndUpdate(
+    maillingId,
+    mailling
+  );
   return maillingResult;
 };
 
 MaillingSchema.statics.getMaillings = async function (): Promise<IMailling> {
-  return await this.find({});
+  return await this.find({}).populate({
+    path: 'lists',
+    select: '_id name',
+  });
 };
 
 MaillingSchema.statics.findMaillingById = async function (
   maillingId: string
 ): Promise<IMailling> {
-  return await this.findById(maillingId);
+  return await this.findById(maillingId).populate({
+    path: 'lists',
+    select: '_id name',
+  });
 };
 
 MaillingSchema.statics.deleteMaillingById = async function (
   maillingId: string
 ): Promise<void> {
-  const mailling = await this.findByIdAndDelete(maillingId);
+  await this.findByIdAndDelete(maillingId);
 };
 
 const MaillingModel =
-  (models['Template'] as IMaillingModel) ||
-  model<IMailling, IMaillingModel>('Template', MaillingSchema);
+  (models['Mailling'] as IMaillingModel) ||
+  model<IMailling, IMaillingModel>('Mailling', MaillingSchema);
 
 export default MaillingModel;

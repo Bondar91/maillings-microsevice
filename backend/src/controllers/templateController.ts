@@ -20,6 +20,7 @@ class templateController {
         templates
       );
     } catch (error) {
+      console.log(error);
       return CommunicationHandler.responseWithError(response, error.message);
     }
   };
@@ -43,7 +44,7 @@ class templateController {
         template
       );
     } catch (error) {
-      return CommunicationHandler.responseWithError(error, error.message);
+      return CommunicationHandler.responseWithError(response, error.message);
     }
   };
 
@@ -61,7 +62,7 @@ class templateController {
         saveTemplate
       );
     } catch (error) {
-      return CommunicationHandler.responseWithError(error, error.message);
+      return CommunicationHandler.responseWithError(response, error.message);
     }
   };
 

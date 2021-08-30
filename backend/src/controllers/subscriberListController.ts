@@ -1,5 +1,5 @@
-import { IListAttributes } from 'models/list/list.d';
-import { List } from 'models';
+import { ISubscriberListAttributes } from 'models/subscriberList/subscriberList.d';
+import { SubscriberList, Subscriber } from 'models';
 import { listSchema } from 'utils/validates/index';
 import { Request, Response } from 'express';
 import CommunicationHandler from 'utils/handlers/CommunicationHandler';
@@ -9,10 +9,10 @@ type SecurityQuery = {
   _id: string;
 };
 
-class listController {
+class subscriberListController {
   static getAll = async (response: Response) => {
     try {
-      const lists = await List.getLists();
+      const lists = await SubscriberList.getLists();
 
       return CommunicationHandler.responseWithSuccess(
         response,
@@ -35,7 +35,7 @@ class listController {
     }
 
     try {
-      const list = await List.findListById(_id);
+      const list = await SubscriberList.findListById(_id);
 
       return CommunicationHandler.responseWithSuccess(
         response,
@@ -43,16 +43,33 @@ class listController {
         list
       );
     } catch (error) {
-      return CommunicationHandler.responseWithError(error, error.message);
+      return CommunicationHandler.responseWithError(response, error.message);
     }
   };
 
   static create = async (request: Request, response: Response) => {
     try {
-      const validatedList: IListAttributes = await listSchema.validateAsync({
-        ...request.body,
-      });
-      const saveList = await List.addList(validatedList);
+      const validatedList: ISubscriberListAttributes =
+        await listSchema.validateAsync({
+          ...request.body,
+        });
+
+      const { subscribersIds } = validatedList;
+      const foundSubscribers = await Subscriber.findSubscribersByIds(
+        subscribersIds
+      );
+
+      if (
+        foundSubscribers &&
+        foundSubscribers.length !== subscribersIds.length
+      ) {
+        return CommunicationHandler.responseWithError(
+          response,
+          'Error! Not found subscriber'
+        );
+      }
+
+      const saveList = await SubscriberList.addList(validatedList);
 
       return CommunicationHandler.responseWithSuccess(
         response,
@@ -60,7 +77,7 @@ class listController {
         saveList
       );
     } catch (error) {
-      return CommunicationHandler.responseWithError(error, error.message);
+      return CommunicationHandler.responseWithError(response, error.message);
     }
   };
 
@@ -75,10 +92,24 @@ class listController {
     }
 
     try {
-      const validatedList: IListAttributes = await listSchema.validateAsync({
-        ...request.body,
-      });
-      const saveList = await List.updateListById(_id, validatedList);
+      const validatedList: ISubscriberListAttributes =
+        await listSchema.validateAsync({
+          ...request.body,
+        });
+
+      const { subscribersIds } = validatedList;
+      const foundSubscribers = await Subscriber.findSubscribersByIds(
+        subscribersIds
+      );
+
+      if (foundSubscribers.length !== subscribersIds.length) {
+        return CommunicationHandler.responseWithError(
+          response,
+          'Error! Not found subscriber'
+        );
+      }
+
+      const saveList = await SubscriberList.updateListById(_id, validatedList);
 
       return CommunicationHandler.responseWithSuccess(
         response,
@@ -101,7 +132,7 @@ class listController {
     }
 
     try {
-      await List.deleteListById(_id);
+      await SubscriberList.deleteListById(_id);
 
       return CommunicationHandler.responseWithSuccess(
         response,
@@ -113,4 +144,4 @@ class listController {
   };
 }
 
-export default listController;
+export default subscriberListController;

@@ -1,9 +1,9 @@
 import { IMaillingAttributes } from 'models/mailling/mailling.d';
-import { Mailling } from 'models';
+import { Mailling, SubscriberList, Template } from 'models';
 import { maillingSchema } from 'utils/validates/index';
 import { Request, Response } from 'express';
 import CommunicationHandler from 'utils/handlers/CommunicationHandler';
-import { isValidObjectId, Types } from 'mongoose';
+import { isValidObjectId } from 'mongoose';
 
 type SecurityQuery = {
   _id: string;
@@ -43,7 +43,7 @@ class maillingController {
         mailling
       );
     } catch (error) {
-      return CommunicationHandler.responseWithError(error, error.message);
+      return CommunicationHandler.responseWithError(response, error.message);
     }
   };
 
@@ -53,6 +53,27 @@ class maillingController {
         await maillingSchema.validateAsync({
           ...request.body,
         });
+
+      const { listsIds, templateId } = validatedMailling;
+
+      const foundTemplate = await Template.findTemplateById(templateId);
+      console.log(foundTemplate);
+      if (!foundTemplate) {
+        return CommunicationHandler.responseWithError(
+          response,
+          'Error! Not found Template'
+        );
+      }
+
+      const foundLists = await SubscriberList.findListsByIds(listsIds);
+      console.log(foundLists);
+      if (foundLists && foundLists.length !== listsIds.length) {
+        return CommunicationHandler.responseWithError(
+          response,
+          'Error! Not found list'
+        );
+      }
+
       const saveMailling = await Mailling.addMailling(validatedMailling);
 
       return CommunicationHandler.responseWithSuccess(
@@ -61,7 +82,7 @@ class maillingController {
         saveMailling
       );
     } catch (error) {
-      return CommunicationHandler.responseWithError(error, error.message);
+      return CommunicationHandler.responseWithError(response, error.message);
     }
   };
 
@@ -80,6 +101,27 @@ class maillingController {
         await maillingSchema.validateAsync({
           ...request.body,
         });
+
+      const { listsIds, templateId } = validatedMailling;
+
+      const foundTemplate = await Template.findTemplateById(templateId);
+      console.log(foundTemplate);
+      if (!foundTemplate) {
+        return CommunicationHandler.responseWithError(
+          response,
+          'Error! Not found Template'
+        );
+      }
+
+      const foundLists = await SubscriberList.findListsByIds(listsIds);
+      console.log(foundLists);
+      if (foundLists && foundLists.length !== listsIds.length) {
+        return CommunicationHandler.responseWithError(
+          response,
+          'Error! Not found list'
+        );
+      }
+
       const saveMailling = await Mailling.updateMaillingById(
         _id,
         validatedMailling

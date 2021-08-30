@@ -1,27 +1,25 @@
 import { Document, Model } from 'mongoose';
-import { ITemplateAttributes } from 'model/template/template.d';
-import { IListAttributes } from 'model/list/list.d';
 
 export interface IMaillingAttributes {
-  title: String;
-  description: String;
-  body: String;
-  templates: ITemplateAttributes[];
-  lists: IListAttributes[];
+  title: string;
+  description: string;
+  body: string;
+  templateId: string;
+  listsIds: string[];
 }
 
 export interface IMailling extends Document, IMaillingAttributes {
-  createdAt?: Date | String;
-  updatedAt?: Date | String;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
 }
 
 export interface IMaillingModel extends Model<IMailling> {
   getMaillings(): Promise<IMailling>;
-  findMaillingById(maillingId: String): Promise<IMailling>;
+  findMaillingById(maillingId: string): Promise<IMailling>;
   addMailling(mailling: IMaillingAttributes): Promise<IMailling>;
   updateMaillingById(
-    maillingId: String,
+    maillingId: string,
     mailling: IMaillingAttributes
   ): Promise<IMailling>;
-  deleteMaillingById(maillingId: String): Promise<void>;
+  deleteMaillingById(maillingId: string): Promise<void>;
 }

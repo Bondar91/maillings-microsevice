@@ -1,23 +1,23 @@
 import { Document, Model } from 'mongoose';
 
 export interface ITemplateAttributes {
-  title: String;
-  description: String;
-  body: String;
+  title: string;
+  description: string;
+  body: string;
 }
 
 export interface ITemplate extends Document, ITemplateAttributes {
-  createdAt?: Date | String;
-  updatedAt?: Date | String;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
 }
 
 export interface ITemplateModel extends Model<ITemplate> {
   getTemplates(): Promise<ITemplate>;
-  findTemplateById(templateId: String): Promise<ITemplate>;
+  findTemplateById(templateId: string): Promise<ITemplate>;
   addTemplate(template: ITemplateAttributes): Promise<ITemplate>;
   updateTemplateById(
-    templateId: String,
+    templateId: string,
     template: ITemplateAttributes
   ): Promise<ITemplate>;
-  deleteTemplateById(templateId: String): Promise<void>;
+  deleteTemplateById(templateId: string): Promise<void>;
 }

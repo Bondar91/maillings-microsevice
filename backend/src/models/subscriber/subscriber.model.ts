@@ -44,12 +44,9 @@ SubscriberSchema.statics.updateSubscriberById = async function (
   subscriberId: string,
   subscriber: ISubscriberAttributes
 ): Promise<ISubscriber> {
-  const subscriberResult = await this.findOneAndUpdate(
-    { _id: subscriberId },
-    subscriber,
-    {
-      upsert: false,
-    }
+  const subscriberResult: ISubscriber = await this.findByIdAndUpdate(
+    subscriberId,
+    subscriber
   );
   return subscriberResult;
 };
@@ -60,9 +57,18 @@ SubscriberSchema.statics.getSubscribers =
   };
 
 SubscriberSchema.statics.findSubscriberById = async function (
-  subscriberId: String
+  subscriberId: string
 ): Promise<ISubscriber> {
   return await this.findOne({ _id: subscriberId });
+};
+
+SubscriberSchema.statics.findSubscribersByIds = async function (
+  subscribersIds: string[]
+): Promise<ISubscriber[]> {
+  console.log(subscribersIds);
+  const subscribers = await this.find().where('_id').in(subscribersIds).exec();
+
+  return subscribers;
 };
 
 SubscriberSchema.statics.deleteSubscriberById = async function (

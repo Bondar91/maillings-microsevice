@@ -43,7 +43,7 @@ class subscriberController {
         subscriber
       );
     } catch (error) {
-      return CommunicationHandler.responseWithError(error, error.message);
+      return CommunicationHandler.responseWithError(response, error.message);
     }
   };
 
@@ -63,7 +63,7 @@ class subscriberController {
         saveSubscriber
       );
     } catch (error) {
-      return CommunicationHandler.responseWithError(error, error.message);
+      return CommunicationHandler.responseWithError(response, error.message);
     }
   };
 

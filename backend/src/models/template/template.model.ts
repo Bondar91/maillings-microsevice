@@ -42,6 +42,7 @@ TemplateSchema.statics.updateTemplateById = async function (
 };
 
 TemplateSchema.statics.getTemplates = async function (): Promise<ITemplate> {
+  console.log('fs');
   return await this.find({});
 };
 
@@ -54,7 +55,7 @@ TemplateSchema.statics.findTemplateById = async function (
 TemplateSchema.statics.deleteTemplateById = async function (
   templateId: string
 ): Promise<void> {
-  const template = await this.findByIdAndDelete(templateId);
+  await this.findByIdAndDelete(templateId);
 };
 
 const TemplateModel =

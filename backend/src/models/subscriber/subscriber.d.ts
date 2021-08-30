@@ -1,25 +1,23 @@
 import { Document, Model } from 'mongoose';
-import { IListAttributes } from 'models/list/list.d';
 
 export interface ISubscriberAttributes {
-  _id?: String;
-  name: String;
-  email: String;
-  lists: IListAttributes[];
+  name: string;
+  email: string;
 }
 
 export interface ISubscriber extends Document, ISubscriberAttributes {
-  createdAt?: Date | String;
-  updatedAt?: Date | String;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
 }
 
 export interface ISubscriberModel extends Model<ISubscriber> {
   getSubscribers(): Promise<ISubscriber>;
-  findSubscriberById(subscriberId: String): Promise<ISubscriber>;
+  findSubscriberById(subscriberId: string): Promise<ISubscriber>;
   addSubscriber(subscriber: ISubscriberAttributes): Promise<ISubscriber>;
   updateSubscriberById(
-    subscriberId: String,
+    subscriberId: string,
     subscriber: ISubscriberAttributes
   ): Promise<ISubscriber>;
-  deleteSubscriberById(subscriberId: String): Promise<void>;
+  deleteSubscriberById(subscriberId: string): Promise<void>;
+  findSubscribersByIds(subscribersIds: string[]): Promise<ISubscriber[]>;
 }
