@@ -1,6 +1,6 @@
 import { IMaillingAttributes } from 'models/mailling/mailling.d';
 import { Mailling, SubscriberList, Template } from 'models';
-import { maillingSchema } from 'utils/validates/index';
+import { maillingSchemaValidation } from 'utils/validates/index';
 import { Request, Response } from 'express';
 import CommunicationHandler from 'utils/handlers/CommunicationHandler';
 import { isValidObjectId } from 'mongoose';
@@ -50,7 +50,7 @@ class maillingController {
   static create = async (request: Request, response: Response) => {
     try {
       const validatedMailling: IMaillingAttributes =
-        await maillingSchema.validateAsync({
+        await maillingSchemaValidation.validateAsync({
           ...request.body,
         });
 
@@ -98,7 +98,7 @@ class maillingController {
 
     try {
       const validatedMailling: IMaillingAttributes =
-        await maillingSchema.validateAsync({
+        await maillingSchemaValidation.validateAsync({
           ...request.body,
         });
 

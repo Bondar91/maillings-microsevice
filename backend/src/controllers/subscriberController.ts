@@ -1,6 +1,6 @@
 import { ISubscriberAttributes } from 'models/subscriber/subscriber.d';
 import { Subscriber } from 'models';
-import { subscriberSchema } from 'utils/validates/index';
+import { subscriberSchemaValidation } from 'utils/validates/index';
 import { Request, Response } from 'express';
 import CommunicationHandler from 'utils/handlers/CommunicationHandler';
 import { isValidObjectId, Types } from 'mongoose';
@@ -50,7 +50,7 @@ class subscriberController {
   static create = async (request: Request, response: Response) => {
     try {
       const validatedSubscriber: ISubscriberAttributes =
-        await subscriberSchema.validateAsync({
+        await subscriberSchemaValidation.validateAsync({
           ...request.body,
         });
       const saveSubscriber = await Subscriber.addSubscriber(
@@ -79,7 +79,7 @@ class subscriberController {
 
     try {
       const validatedSubscriber: ISubscriberAttributes =
-        await subscriberSchema.validateAsync({
+        await subscriberSchemaValidation.validateAsync({
           ...request.body,
         });
       const saveSubscriber = await Subscriber.updateSubscriberById(

@@ -1,6 +1,6 @@
 import { ITemplateAttributes } from 'models/template/template.d';
 import { Template } from 'models';
-import { templateSchema } from 'utils/validates/index';
+import { templateSchemaValidation } from 'utils/validates/index';
 import { Request, Response } from 'express';
 import CommunicationHandler from 'utils/handlers/CommunicationHandler';
 import { isValidObjectId, Types } from 'mongoose';
@@ -51,7 +51,7 @@ class templateController {
   static create = async (request: Request, response: Response) => {
     try {
       const validatedTemplate: ITemplateAttributes =
-        await templateSchema.validateAsync({
+        await templateSchemaValidation.validateAsync({
           ...request.body,
         });
       const saveTemplate = await Template.addTemplate(validatedTemplate);
@@ -78,7 +78,7 @@ class templateController {
 
     try {
       const validatedTemplate: ITemplateAttributes =
-        await templateSchema.validateAsync({
+        await templateSchemaValidation.validateAsync({
           ...request.body,
         });
       const saveTemplate = await Template.updateTemplateById(

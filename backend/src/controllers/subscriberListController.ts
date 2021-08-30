@@ -1,6 +1,6 @@
 import { ISubscriberListAttributes } from 'models/subscriberList/subscriberList.d';
 import { SubscriberList, Subscriber } from 'models';
-import { listSchema } from 'utils/validates/index';
+import { subscriberListSchemaValidation } from 'utils/validates/index';
 import { Request, Response } from 'express';
 import CommunicationHandler from 'utils/handlers/CommunicationHandler';
 import { isValidObjectId, Types } from 'mongoose';
@@ -12,12 +12,12 @@ type SecurityQuery = {
 class subscriberListController {
   static getAll = async (response: Response) => {
     try {
-      const lists = await SubscriberList.getLists();
+      const subscriberLists = await SubscriberList.getLists();
 
       return CommunicationHandler.responseWithSuccess(
         response,
         'Success! List has been found',
-        lists
+        subscriberLists
       );
     } catch (error) {
       return CommunicationHandler.responseWithError(response, error.message);
@@ -35,12 +35,12 @@ class subscriberListController {
     }
 
     try {
-      const list = await SubscriberList.findListById(_id);
+      const subscriberList = await SubscriberList.findListById(_id);
 
       return CommunicationHandler.responseWithSuccess(
         response,
         'Success! List has been found',
-        list
+        subscriberList
       );
     } catch (error) {
       return CommunicationHandler.responseWithError(response, error.message);
@@ -49,12 +49,12 @@ class subscriberListController {
 
   static create = async (request: Request, response: Response) => {
     try {
-      const validatedList: ISubscriberListAttributes =
-        await listSchema.validateAsync({
+      const validatedSubscriberList: ISubscriberListAttributes =
+        await subscriberListSchemaValidation.validateAsync({
           ...request.body,
         });
 
-      const { subscribersIds } = validatedList;
+      const { subscribersIds } = validatedSubscriberList;
       const foundSubscribers = await Subscriber.findSubscribersByIds(
         subscribersIds
       );
@@ -69,7 +69,7 @@ class subscriberListController {
         );
       }
 
-      const saveList = await SubscriberList.addList(validatedList);
+      const saveList = await SubscriberList.addList(validatedSubscriberList);
 
       return CommunicationHandler.responseWithSuccess(
         response,
@@ -92,12 +92,12 @@ class subscriberListController {
     }
 
     try {
-      const validatedList: ISubscriberListAttributes =
-        await listSchema.validateAsync({
+      const validatedSubscriberList: ISubscriberListAttributes =
+        await subscriberListSchemaValidation.validateAsync({
           ...request.body,
         });
 
-      const { subscribersIds } = validatedList;
+      const { subscribersIds } = validatedSubscriberList;
       const foundSubscribers = await Subscriber.findSubscribersByIds(
         subscribersIds
       );
@@ -109,7 +109,10 @@ class subscriberListController {
         );
       }
 
-      const saveList = await SubscriberList.updateListById(_id, validatedList);
+      const saveList = await SubscriberList.updateListById(
+        _id,
+        validatedSubscriberList
+      );
 
       return CommunicationHandler.responseWithSuccess(
         response,
