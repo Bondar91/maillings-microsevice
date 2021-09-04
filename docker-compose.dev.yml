@@ -1,39 +1,62 @@
 version: "3"
 services:
-  node:
-    container_name: emails-app
+  api:
+    container_name: api
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
 
     volumes:
-      - ./backend:/backend
+      - ./backend:/app
+
     ports:
       - "3000:3000"
+
     depends_on:
       - db
 
     networks:
-      - backend-network
+      net:
 
   db:
     container_name: mongo
     image: mongo
+
     environment:
       MONGO_INITDB_DATABASE: maillingsapp
       MONGO_INITDB_ROOT_USERNAME: krystian91
       MONGO_INITDB_ROOT_PASSWORD: pr4KQCtzqKbh0rNT
+
     ports:
       - "27017-27019:27017-27019"
+
     volumes:
       - mongo_db:/data/db
 
     networks:
-      - backend-network
+      net:
+
+  ui:
+    container_name: ui
+    build:
+      context: ./ui
+      dockerfile: Dockerfile.dev
+
+    volumes:
+      - ./ui:/app
+
+    depends_on:
+      - db
+      - api
+
+    ports:
+      - "5000:3000"
+
+    networks:
+      net:
 
 networks:
-  backend-network:
+  net:
 
 volumes:
-  app:
   mongo_db:
