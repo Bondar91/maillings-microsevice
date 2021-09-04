@@ -1,7 +1,8 @@
 import React from 'react';
+import Navigation from '../../components/Navigation/index';
 
 const Subscribers = () => {
-  return <div>Subscribers</div>;
+  return <Navigation />;
 };
 
 export default Subscribers;
