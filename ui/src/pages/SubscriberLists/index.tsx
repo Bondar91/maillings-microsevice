@@ -1,8 +1,8 @@
 import React from 'react';
 import Layout from '../../components/Layout';
 
-const Subscribers = () => {
+const SubscriberLists = () => {
   return <Layout />;
 };
 
-export default Subscribers;
+export default SubscriberLists;

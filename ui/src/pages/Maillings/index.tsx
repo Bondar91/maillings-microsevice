@@ -1,8 +1,9 @@
 import React from 'react';
+
 import Layout from '../../components/Layout';
 
-const Subscribers = () => {
+const Maillings = () => {
   return <Layout />;
 };
 
-export default Subscribers;
+export default Maillings;

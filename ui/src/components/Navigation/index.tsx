@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { NavLink } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
 
 import Link from './Links';

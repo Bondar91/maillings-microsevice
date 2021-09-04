@@ -9,7 +9,7 @@ const navigationItems = [
   },
   {
     text: 'SubscriberLists',
-    to: '/subscribersLists',
+    to: '/subscriberLists',
   },
   {
     text: 'Templates',
