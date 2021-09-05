@@ -1,29 +1,12 @@
 import React, { FC } from 'react';
 
 import { NavLink } from 'react-router-dom';
+import { INavigationLinks } from '../types';
+import { navigationLinks } from '../common/navigationLinks';
 
-const navigationItems = [
-  {
-    text: 'Subscribers',
-    to: '/subscribers',
-  },
-  {
-    text: 'SubscriberLists',
-    to: '/subscriberLists',
-  },
-  {
-    text: 'Templates',
-    to: '/templates',
-  },
-  {
-    text: 'Maillings',
-    to: '/maillings',
-  },
-];
-
-const Link = () => (
+const Links: FC<INavigationLinks> = (): JSX.Element => (
   <>
-    {navigationItems.map((item, key) => (
+    {navigationLinks.map((item, key) => (
       <NavLink
         key={key}
         to={item.to}
@@ -35,4 +18,4 @@ const Link = () => (
   </>
 );
 
-export default Link;
+export default Links;
