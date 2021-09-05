@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import Layout from '../../components/Layout';
 
-const Maillings = () => {
-  return <Layout />;
+const Maillings: FC = (): JSX.Element => {
+  return <Layout title="Maillings" />;
 };
 
 export default Maillings;
