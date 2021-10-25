@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { config } from 'config';
 import { useFetch } from 'hooks/useFetch';
-import { ISubscriberResponse } from './types';
+import { ISubscriberAttributes, ISubscriberResponse } from './types';
 import Api from '../api';
 
 const { apiUrl } = config;
@@ -18,18 +18,13 @@ class subscriberService {
 
     // return { data, isLoading, hasError, errorMessage };
 
-    return Api.get('subscribers');
+    return Api.get<ISubscriberResponse>('subscribers')
+
   }
 
   static create(subscriberData: IFormValues) {
-    const { data, isLoading, hasError, errorMessage } =
-      useFetch<ISubscriberResponse>(
-        `${apiUrl}subscribers`,
-        'POST',
-        subscriberData,
-      );
-
-    return { data };
+    
+    return Api.post<IFormValues>('subscribers', subscriberData)
   }
 }
 

@@ -1,30 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import Table from '../../components/Table';
 import { columns } from '../../components/Table/common/columns';
 import subscriberService from '../../services/subscriberService';
+import { ISubscriberAttributes, ISubscriberResponse } from '../../services/types';
+import {useSubscribersFacade} from '../../hooks/useSubscribersFacade';
+
 
 const Subscribers = () => {
-  const getData = () => {
-    return new Promise((resolve, reject) => {
-      subscriberService
-        .getAll()
-        .then((result) => {
-          resolve({
-            data: result.data,
-          });
-        })
-        .catch((err) => reject(err));
-    });
-  };
-
-  console.log(getData());
-
-  return (
-    <Layout title="Subscribers">
-      {/* {data?.data && <Table data={data?.data} columns={columns.subscribers} />}
-      {hasError && <p>{errorMessage}</p>} */}
-    </Layout>
+  const { apiData } = useSubscribersFacade();
+  
+  console.log(apiData)
+  
+  return (<></>
+    // <Layout title="Subscribers">
+    //   <Table data={() => getData().then(res=>res)} columns={columns.subscribers} />
+    //   {/* {data?.data && <Table data={data?.data} columns={columns.subscribers} />} */}
+    //   {/* {hasError && <p>{errorMessage}</p>} */}
+    // </Layout>
   );
 };
 

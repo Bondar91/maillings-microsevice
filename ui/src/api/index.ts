@@ -1,20 +1,12 @@
 import { config } from 'config';
-
-type ConfigApi = {
-  method?: string;
-  body?: any;
-  headers: {
-    [key: string]: string;
-  };
-};
-
 class Api {
+  
   request<T>(
     endpoint: string,
-    method: string = 'GET',
-    data: object | null = null,
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+    body?: any,
   ): Promise<T> {
-    const configApi: ConfigApi = {
+    const options: RequestInit = {
       method,
       headers: {
         'Content-type': 'application/json',
@@ -22,29 +14,31 @@ class Api {
       },
     };
 
-    if (method === 'POST' || method === 'PATCH') {
-      configApi.body = JSON.stringify(data);
+    if (body && method !== 'GET' && method !== 'DELETE') {
+       options.body = JSON.stringify(body);
     }
+
     const { apiUrl } = config;
     const url = `${apiUrl}${endpoint}`;
-    return fetch(url, configApi).then((response) => {
-      return response.json();
+
+    return fetch(url, options).then((response) => {
+      return response.json()
     });
   }
 
-  get(endpoint: string) {
-    return this.request(endpoint);
+  get<T>(endpoint: string) {
+    return this.request<T>(endpoint, 'GET');
   }
 
-  // post<T extends {}, P>(endpoint: string, data: T) {
-  //   return this.request<P>(endpoint, 'POST', data);
-  // }
+  post<T>(endpoint: string, data: T) {
+    return this.request<T>(endpoint, 'POST', data);
+  }
 
-  // put<T extends {}, P>(endpoint: string, data: T) {
-  //   return this.request<P>(endpoint, 'PUT', data);
-  // }
+  put<T>(endpoint: string, data: T) {
+    return this.request<T>(endpoint, 'PUT', data);
+  }
 
-  _delete(endpoint: string) {
+  delete(endpoint: string) {
     return this.request(endpoint, 'DELETE');
   }
 }
@@ -52,3 +46,4 @@ class Api {
 const ApiHandler = new Api();
 
 export default ApiHandler;
+

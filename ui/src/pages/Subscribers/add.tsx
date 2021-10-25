@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 import Layout from '../../components/Layout';
 import subscriberService from '../../services/subscriberService';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikHelpers } from 'formik';
 import { subscriberValidationSchema } from '../../schemas/subscriberValidationSchema';
+import { ISubscriberAttributes } from '../../services/types';
 
 export interface IFormValues {
   name: string;
@@ -12,13 +13,20 @@ export interface IFormValues {
 export default function AddSubscriber() {
   // const subscriberForm = useRef();
 
-  const handleSubmit = async (values: IFormValues) => {
-    console.log('values', values);
-
-    return values;
-
-    // const { data } = subscriberService.create(values);
-  };
+  const handleSubmit = async (values: IFormValues,  formikHelpers: FormikHelpers<IFormValues>) => {
+    const newUser = {
+      name: values.name,
+      email: values.email,
+    };
+    return subscriberService.create(newUser)
+      .then((res) => {
+        formikHelpers.resetForm();
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
 
   return (
     <Layout title="Dodaj Subskrybenta">
@@ -26,8 +34,8 @@ export default function AddSubscriber() {
         <div className="px-8 py-6 mx-4 mt-4 text-left bg-white shadow-lg md:w-1/2 lg:w-1/2 sm:w-1/2">
           <Formik
             initialValues={{
-              name: '',
-              email: '',
+              name: 'test',
+              email: 'test2@s.pl',
             }}
             onSubmit={handleSubmit}
             validationSchema={subscriberValidationSchema}
