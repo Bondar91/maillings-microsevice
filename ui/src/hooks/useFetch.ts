@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { IResponse } from './types';
 
 export const useFetch = <T>(
@@ -8,10 +8,11 @@ export const useFetch = <T>(
   headers: HeadersInit = { 'Content-Type': 'application/json' },
 ): IResponse<T> => {
   const [data, setData] = useState<T | null>(null);
+  console.log('s');
   const [isLoading, setLoading] = useState<boolean>(false);
   const [hasError, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
-
+  console.log(data);
   useEffect(() => {
     const apiHandler = async () => {
       setLoading(true);

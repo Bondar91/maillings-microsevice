@@ -15,13 +15,6 @@ const SubscriberSchema: Schema = new Schema(
       type: String,
       required: true,
     },
-    lists: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'List',
-        required: true,
-      },
-    ],
   },
   {
     timestamps: true,

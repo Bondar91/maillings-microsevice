@@ -1,6 +1,6 @@
 import express, { Response, Request } from 'express';
 import next from 'next';
-
+const cors = require('cors');
 import connectDb from './utils/db/connectiondb';
 
 const port = 3000;
@@ -16,6 +16,7 @@ const dev = process.env.NODE_ENV !== 'production';
 
     await app.prepare();
     const server = express();
+    server.use(cors());
 
     server.all('*', (req: Request, res: Response) => {
       return handle(req, res);
