@@ -7,5 +7,7 @@ export interface ISubscriberAttributes extends Object {
 }
 
 export interface ISubscriberResponse {
+  error: boolean;
+  message: string;
   data: ISubscriberAttributes;
 }

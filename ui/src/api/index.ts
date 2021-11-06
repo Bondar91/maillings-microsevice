@@ -1,6 +1,5 @@
 import { config } from 'config';
 class Api {
-  
   request<T>(
     endpoint: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
@@ -15,14 +14,14 @@ class Api {
     };
 
     if (body && method !== 'GET' && method !== 'DELETE') {
-       options.body = JSON.stringify(body);
+      options.body = JSON.stringify(body);
     }
 
     const { apiUrl } = config;
     const url = `${apiUrl}${endpoint}`;
 
     return fetch(url, options).then((response) => {
-      return response.json()
+      return response.json();
     });
   }
 
@@ -46,4 +45,3 @@ class Api {
 const ApiHandler = new Api();
 
 export default ApiHandler;
-

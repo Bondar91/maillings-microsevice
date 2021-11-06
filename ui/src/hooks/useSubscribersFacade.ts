@@ -1,45 +1,38 @@
-import {useEffect, useState} from 'react';
-import { ISubscriberAttributes, ISubscriberResponse } from 'services/types';
-import subscriberService from '../services/subscriberService';
+import { useEffect, useState } from 'react';
+import { ISubscriberResponse } from 'services/types';
+import SubscriberQuery from '../services/subscribers/subscriberQuery';
 
 export const useSubscribersFacade = () => {
-  const [apiData, setApiData] = useState<ISubscriberAttributes | null>(null);
+  const [data, setData] = useState<ISubscriberResponse | null>(null);
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const [hasError, setError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
     const getData = async () => {
+      setLoading(true);
+
       try {
-        const response = await subscriberService.getAll();
-        const data = await response?.data;
+        const response = await SubscriberQuery.getAll();
+        setData(response);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        setError(true);
 
-        setApiData(data);
-
-        return data;
-
-      } catch( error) {
-        console.log(error)
+        if (error instanceof Error) {
+          setErrorMessage(error.message);
+        }
       }
-    }
+    };
 
     getData();
-  }, [])
-  // const getData = () => {
-    // return new Promise<ISubscriberResponse>((resolve, reject) => {
-    //   subscriberService
-    //     .getAll()
-    //     .then((result) => {
-    //       resolve({
-    //         data: result.data,
-    //       })
-    //     })
-    //     .catch((err) => reject(err));
-    // });
-    
-  // };
-
- 
+  }, []);
 
   return {
-    apiData,
-   
+    data,
+    isLoading,
+    hasError,
+    errorMessage,
   };
 };

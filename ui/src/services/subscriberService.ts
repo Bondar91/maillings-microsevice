@@ -18,13 +18,11 @@ class subscriberService {
 
     // return { data, isLoading, hasError, errorMessage };
 
-    return Api.get<ISubscriberResponse>('subscribers')
-
+    return Api.get<ISubscriberResponse[]>('subscribers');
   }
 
   static create(subscriberData: IFormValues) {
-    
-    return Api.post<IFormValues>('subscribers', subscriberData)
+    return Api.post<IFormValues>('subscribers', subscriberData);
   }
 }
 
