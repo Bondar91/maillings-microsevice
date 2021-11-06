@@ -1,13 +1,9 @@
 import React from 'react';
-import Layout from '../../components/Layout';
-import Table from '../../components/Table';
-import { columns } from '../../components/Table/common/columns';
+import { Layout, Table, columns } from '../../components';
 import { useSubscribersFacade } from '../../hooks/useSubscribersFacade';
 
-const Subscribers = () => {
+export const SubscribersPage = () => {
   const { data, isLoading, hasError, errorMessage } = useSubscribersFacade();
-
-  console.log(data);
 
   return (
     <Layout title="Subscribers" isLoading={isLoading}>
@@ -16,5 +12,3 @@ const Subscribers = () => {
     </Layout>
   );
 };
-
-export default Subscribers;

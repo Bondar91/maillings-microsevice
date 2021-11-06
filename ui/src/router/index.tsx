@@ -1,17 +1,19 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import Subscribers from '../pages/Subscribers';
-import AddSubscriber from '../pages/Subscribers/add';
-import SubscriberLists from '../pages/SubscriberLists';
+import { SubscribersPage } from '../pages/Subscribers';
+import { AddSubscriberPage } from '../pages/Subscribers/add';
+// import SubscriberLists from '../pages/SubscriberLists';
 import Templates from '../pages/Templates';
 import Maillings from '../pages/Maillings';
+import { Notifications } from '../components';
 
 const Router = () => (
   <BrowserRouter>
+    <Notifications />
     <Switch>
-      <Route exact path="/subscribers" component={Subscribers} />
-      <Route exact path="/subscribers/add" component={AddSubscriber} />
-      <Route exact path="/subscriberLists" component={SubscriberLists} />
+      <Route exact path="/subscribers" component={SubscribersPage} />
+      <Route exact path="/subscribers/add" component={AddSubscriberPage} />
+      {/* <Route exact path="/subscriberLists" component={SubscriberLists} /> */}
       <Route exact path="/templates" component={Templates} />
       <Route exact path="/maillings" component={Maillings} />
     </Switch>

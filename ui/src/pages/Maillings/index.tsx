@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import Layout from '../../components/Layout';
+import { Layout, Table } from '../../components';
 
 const Maillings: FC = (): JSX.Element => {
   return <Layout title="Maillings" />;

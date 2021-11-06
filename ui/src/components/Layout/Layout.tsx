@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
 
-import Navigation from '../Navigation';
-import Loader from '../Loader';
+import { Loader, Navigation } from '../../components';
 import { ILayout } from './types';
 
-const Layout: FC<ILayout> = ({
+export const Layout: FC<ILayout> = ({
   title,
   children,
   isLoading = false,
@@ -24,5 +23,3 @@ const Layout: FC<ILayout> = ({
     </>
   );
 };
-
-export default Layout;

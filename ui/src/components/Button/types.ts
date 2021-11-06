@@ -1,5 +1,5 @@
 export interface IButton {
-  color: string;
-  handleClick: () => void;
+  color?: string;
+  handleClick?: () => void;
   children: React.ReactNode;
 }

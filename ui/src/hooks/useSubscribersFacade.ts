@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { ISubscriberResponse } from 'services/types';
-import SubscriberQuery from '../services/subscribers/subscriberQuery';
+import { SubscriberQuery } from '../services/subscribers/subscriberQuery';
+import { ISubscriberResponse } from '../utils/types/subscriber';
 
 export const useSubscribersFacade = () => {
+  const subscriberQuery = new SubscriberQuery();
+
   const [data, setData] = useState<ISubscriberResponse | null>(null);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [hasError, setError] = useState<boolean>(false);
@@ -13,7 +15,7 @@ export const useSubscribersFacade = () => {
       setLoading(true);
 
       try {
-        const response = await SubscriberQuery.getAll();
+        const response = await subscriberQuery.getAll();
         setData(response);
         setLoading(false);
       } catch (error) {

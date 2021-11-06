@@ -29,7 +29,7 @@ class Api {
     return this.request<T>(endpoint, 'GET');
   }
 
-  post<T>(endpoint: string, data: T) {
+  post<T>(endpoint: string, data: any) {
     return this.request<T>(endpoint, 'POST', data);
   }
 

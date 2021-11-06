@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { IButton } from './types';
 
-const Button: FC<IButton> = ({
+export const Button: FC<IButton> = ({
   color = 'blue',
   handleClick,
   children,
@@ -13,5 +13,3 @@ const Button: FC<IButton> = ({
     {children}
   </button>
 );
-
-export default Button;

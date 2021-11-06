@@ -3,7 +3,7 @@ import React, { FC, useState } from 'react';
 import { Transition } from '@headlessui/react';
 import Links from './Links';
 
-const Navigation: FC = (): JSX.Element => {
+export const Navigation: FC = (): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -91,5 +91,3 @@ const Navigation: FC = (): JSX.Element => {
     </nav>
   );
 };
-
-export default Navigation;
